@@ -20,7 +20,8 @@ func main() {
 	itemService := services.NewItemService(itemRepository)
 	itemController := controllers.NewItemController(itemService)
 
-	router := gin.Default()
-	router.GET("/items", itemController.FindAll)
-	router.Run("localhost:8080")
+	r := gin.Default()
+	r.GET("/items", itemController.FindAll)
+	r.GET("/items/:id", itemController.FindById)
+	r.Run("localhost:8080")
 }
