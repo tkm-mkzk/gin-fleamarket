@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func NewRouter() *gin.Engine {
@@ -14,6 +15,11 @@ func NewRouter() *gin.Engine {
 	infra.Initialize()
 	db := infra.SetupDB()
 
+	return NewRouterWithDB(db)
+}
+
+// テスト用にDBインスタンスを受け取れる関数
+func NewRouterWithDB(db *gorm.DB) *gin.Engine {
 	r := gin.Default()
 	r.Use(cors.Default())
 
