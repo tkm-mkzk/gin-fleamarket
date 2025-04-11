@@ -3,6 +3,7 @@ package routers
 import (
 	"gin-fleamarket/di"
 	"gin-fleamarket/infra"
+	"gin-fleamarket/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,16 +18,18 @@ func NewRouter() *gin.Engine {
 	// 依存性注入（インターフェースとして取得）
 	itemController := di.NewItemController(db)
 	authController := di.NewAuthController(db)
+	authService := di.NewAuthService(db)
 
 	// API v1 グループ
 	v1 := r.Group("/v1")
 	{
 		// アイテム関連のルート
 		items := v1.Group("/items")
+		itemsWithAuth := v1.Group("/items", middlewares.AuthMiddleware((authService)))
 		{
 			items.GET("", itemController.FindAll)
 			items.GET("/:id", itemController.FindById)
-			items.POST("", itemController.Create)
+			itemsWithAuth.POST("", itemController.Create)
 			items.PUT("/:id", itemController.Update)
 			items.DELETE("/:id", itemController.Delete)
 		}
