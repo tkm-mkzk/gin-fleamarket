@@ -9,5 +9,5 @@ func main() {
 			"message": "pong",
 		})
 	})
-	router.Run() // 0.0.0.0:8080 でサーバーを立てます。
+	router.Run()
 }
