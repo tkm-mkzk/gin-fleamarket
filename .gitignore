@@ -1,0 +1,32 @@
+# Go binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary
+*.test
+
+# Coverage
+*.out
+
+# Vendor
+vendor/
+
+# Environment variables
+.env
+
+# Temporary files
+tmp/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+docker/postgres/pgdata/
+docker/pgadmin/*
