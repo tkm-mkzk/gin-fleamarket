@@ -35,6 +35,7 @@ func NewRouter() *gin.Engine {
 		auth := v1.Group("/auth")
 		{
 			auth.POST("/signup", authController.SignUp)
+			auth.POST("/login", authController.Login)
 		}
 	}
 
