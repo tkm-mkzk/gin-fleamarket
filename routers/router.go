@@ -28,10 +28,10 @@ func NewRouter() *gin.Engine {
 		itemsWithAuth := v1.Group("/items", middlewares.AuthMiddleware((authService)))
 		{
 			items.GET("", itemController.FindAll)
-			items.GET("/:id", itemController.FindById)
+			itemsWithAuth.GET("/:id", itemController.FindById)
 			itemsWithAuth.POST("", itemController.Create)
-			items.PUT("/:id", itemController.Update)
-			items.DELETE("/:id", itemController.Delete)
+			itemsWithAuth.PUT("/:id", itemController.Update)
+			itemsWithAuth.DELETE("/:id", itemController.Delete)
 		}
 
 		// 認証関連のルート
