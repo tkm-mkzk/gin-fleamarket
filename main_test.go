@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
+	"gin-fleamarket/dto"
 	"gin-fleamarket/infra"
 	"gin-fleamarket/models"
 	"gin-fleamarket/routers"
+	"gin-fleamarket/services"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -75,4 +78,34 @@ func TestFindAll(t *testing.T) {
 	// アサーション
 	assert.Equal(t, http.StatusOK, w.Code)
 	assert.Equal(t, 3, len(res["data"]))
+}
+
+func TestCreate(t *testing.T) {
+	// テストのセットアップ
+	router := setup()
+
+	token, err := services.CreateToken(1, "test1@example.com")
+	assert.Equal(t, nil, err)
+
+	createItemInput := dto.CreateItemInput{
+		Name:        "テストアイテム4",
+		Price:       4000,
+		Description: "Createテスト",
+	}
+	reqBody, _ := json.Marshal(createItemInput)
+
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("POST", "/v1/items", bytes.NewBuffer(reqBody))
+	req.Header.Set("Authorization", "Bearer "+*token)
+
+	// APIリクエストの実行
+	router.ServeHTTP(w, req)
+
+	// APIの実行結果を取得
+	var res map[string]models.Item
+	json.Unmarshal([]byte(w.Body.String()), &res)
+
+	// アサーション
+	assert.Equal(t, http.StatusCreated, w.Code)
+	assert.Equal(t, uint(4), res["data"].ID)
 }
