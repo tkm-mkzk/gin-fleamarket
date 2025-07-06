@@ -5,6 +5,7 @@ import (
 	"gin-fleamarket/infra"
 	"gin-fleamarket/middlewares"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,6 +15,7 @@ func NewRouter() *gin.Engine {
 	db := infra.SetupDB()
 
 	r := gin.Default()
+	r.Use(cors.Default())
 
 	// 依存性注入（インターフェースとして取得）
 	itemController := di.NewItemController(db)
